@@ -2,7 +2,7 @@
   "name": "@lightyears1998/akane0-adapter-mirai",
   "version": "1.0.0",
   "description": "Akane0 Adapter for Mirai",
-  "main": "src/index.ts",
+  "main": "lib/index.js",
   "author": "lightyears <lightyears1998@hotmail.com>",
   "license": "AGPL-3.0",
   "scripts": {
@@ -28,5 +28,8 @@
     "eslint": "^8.7.0",
     "eslint-plugin-import": "^2.25.4",
     "ts-node-dev": "^1.1.8"
+  },
+  "peerDependencies": {
+    "@lightyears1998/akane0": "*"
   }
 }
