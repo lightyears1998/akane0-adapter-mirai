@@ -4,6 +4,7 @@
   "description": "Akane0 Adapter for Mirai",
   "main": "lib/index.js",
   "author": "lightyears <lightyears1998@hotmail.com>",
+  "repository": "https://github.com/lightyears1998/akane0-adapter-mirai.git",
   "license": "AGPL-3.0",
   "scripts": {
     "dev": "cross-env DEBUG=* ts-node-dev --respawn --transpile-only src/adapter.test.ts",

@@ -14,6 +14,7 @@ import {
 import { MiraiAboutMessage } from "./upstream-data";
 
 const debugPrint = debug("akane0-adapter-mirai");
+
 function printDebugInfo() {
   const parameters = {
     MIRAI_HOST, MIRAI_HTTP_BASIC_AUTH, MIRAI_VERIFY_KEY
@@ -49,8 +50,8 @@ export class AkaneAdapterMirai implements AkaneAdapter {
     return headers;
   }
 
-  sendMessage(cmd: MiraiCommand, callback?: MiraiMessageCallback) {
-    const message = new WebsocketOutgoingMessage(cmd);
+  sendMessage(command: MiraiCommand, callback?: MiraiMessageCallback) {
+    const message = new WebsocketOutgoingMessage(command);
     this.sendWebsocketMessage(message, callback);
   }
 
@@ -58,6 +59,8 @@ export class AkaneAdapterMirai implements AkaneAdapter {
     if (!this.upstream) {
       throw new Error("Websocket upstream is not initialized.");
     }
+
+    console.log(JSON.stringify(message));
 
     this.upstream.send(JSON.stringify(message));
     if (callback) {
@@ -76,6 +79,7 @@ export class AkaneAdapterMirai implements AkaneAdapter {
         this.sendMessage({ command: "about" }, (message) => {
           const { data } = message as MiraiAboutMessage;
           console.log(`Remote Mirai server version: ${data.version}`);
+          resolve();
         });
       });
 

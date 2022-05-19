@@ -3,8 +3,6 @@ import AkaneAdapterMirai from ".";
 const adapter = new AkaneAdapterMirai();
 adapter.start();
 
-// adapter.sendWebsocketMessage("sendFriendMessage");
-
 setTimeout(() => {
-  adapter.stop();
+  adapter.sendMessage({ command: "friendList" }, msg => console.log(msg));
 }, 4000);

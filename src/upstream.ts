@@ -14,6 +14,7 @@ export type MiraiCommandContent = Record<string, unknown>
 export interface MiraiCommand {
   command: string
   subCommand?: string
+  content?: MiraiCommandContent
 }
 
 /**
@@ -25,7 +26,9 @@ export class WebsocketOutgoingMessage {
   subCommand?: string;
   content?: MiraiCommandContent;
 
-  constructor({ command, subCommand }: MiraiCommand, content?: MiraiCommandContent) {
+  constructor({
+    command, subCommand, content
+  }: MiraiCommand) {
     this.syncId = randomSyncId(command);
     this.command = command;
     this.subCommand = subCommand;
