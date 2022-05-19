@@ -1,8 +1,44 @@
-export type UpstreamMessage = Record<string, unknown>
+import { randomSyncId } from "./util";
 
-export interface WebsocketMessage {
-  syncId: string
-  data: UpstreamMessage
+export type MiraiData = Record<string, unknown>
+
+export interface MiraiMessage
+{
+  code: number
+  message: string
+  data: MiraiData
 }
 
-export type WebSocketMessageCallback = (message: UpstreamMessage) => void
+export type MiraiCommandContent = Record<string, unknown>
+
+export interface MiraiCommand {
+  command: string
+  subCommand?: string
+}
+
+/**
+ * Message sent to akane0 adapter to Mirai upstream server
+ */
+export class WebsocketOutgoingMessage {
+  syncId: string;
+  command: string;
+  subCommand?: string;
+  content?: MiraiCommandContent;
+
+  constructor({ command, subCommand }: MiraiCommand, content?: MiraiCommandContent) {
+    this.syncId = randomSyncId(command);
+    this.command = command;
+    this.subCommand = subCommand;
+    this.content = content;
+  }
+}
+
+/**
+ * Message sent from Mirai upstream to akane0 adapter
+ */
+export interface WebsocketIncomingMessage {
+  syncId: string
+  data: MiraiMessage
+}
+
+export type MiraiMessageCallback = (message: MiraiMessage) => void
