@@ -1,0 +1,7 @@
+.vscode
+.editorconfig
+.eslintrc*
+.gitattributes
+.gitignore
+tsconfig.json
+.env

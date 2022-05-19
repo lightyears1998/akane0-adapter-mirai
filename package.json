@@ -9,7 +9,8 @@
     "dev": "cross-env DEBUG=adapter,akane ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "tsc",
     "lint": "eslint src",
-    "update": "git pull --rebase && yarn install && yarn build"
+    "update": "git pull --rebase && yarn install && yarn build",
+    "prepack": "npm run build"
   },
   "dependencies": {
     "@types/debug": "^4.1.7",

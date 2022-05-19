@@ -1,5 +1,0 @@
-# Systemd Setup
-
-``` conf
-
-```
