@@ -3,7 +3,7 @@ import { EventEmitter } from "stream";
 
 import debug from "debug";
 import { WebSocket } from "ws";
-import { AkaneAdapter } from "@lightyears1998/akane0";
+import { AkaneAdapter } from "@lightyears1998/akane0-core";
 
 import {
   MIRAI_ADAPTER_QQ, MIRAI_HOST, MIRAI_HTTP_BASIC_AUTH, MIRAI_VERIFY_KEY, MIRAI_WS_PORT, MIRAI_WS_PROTOCOL
