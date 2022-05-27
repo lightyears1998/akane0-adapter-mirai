@@ -1,6 +1,6 @@
 {
   "name": "@lightyears1998/akane0-adapter-mirai",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Akane0 Adapter for Mirai",
   "main": "lib/index.js",
   "author": "lightyears <lightyears1998@hotmail.com>",
