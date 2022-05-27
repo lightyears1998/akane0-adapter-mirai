@@ -9,9 +9,10 @@ import {
   MIRAI_ADAPTER_QQ, MIRAI_HOST, MIRAI_HTTP_BASIC_AUTH, MIRAI_VERIFY_KEY, MIRAI_WS_PORT, MIRAI_WS_PROTOCOL
 } from "./config";
 import {
-  WebsocketOutgoingMessage, WebsocketIncomingMessage, MiraiMessageCallback, MiraiCommand
+  WebsocketOutgoingMessage, WebsocketIncomingMessage, MiraiMessageCallback, MiraiCommand, MiraiMessage
 } from "./upstream";
 import { MiraiAboutMessage } from "./upstream-data";
+import { getPackageJsonVersion } from "./util";
 
 const debugPrint = debug("akane0-adapter-mirai");
 
@@ -24,12 +25,12 @@ function printDebugInfo() {
 
 export class AkaneAdapterMirai implements AkaneAdapter {
   id: string;
-  version = "20220518";
+  version = getPackageJsonVersion();
 
   uri: string;
   upstream?: WebSocket;
 
-  messageEmitter = new EventEmitter();
+  miraiMessageEventEmitter = new EventEmitter();
 
   constructor() {
     this.id = randomUUID();
@@ -64,7 +65,7 @@ export class AkaneAdapterMirai implements AkaneAdapter {
 
     this.upstream.send(JSON.stringify(message));
     if (callback) {
-      this.messageEmitter.once(message.syncId, (message: WebsocketIncomingMessage) => {
+      this.miraiMessageEventEmitter.once(message.syncId, (message: WebsocketIncomingMessage) => {
         callback(message.data);
       });
     }
@@ -88,8 +89,7 @@ export class AkaneAdapterMirai implements AkaneAdapter {
         const { syncId } = message;
 
         if (syncId) {
-          this.messageEmitter.emit(syncId, message);
-          return;
+          this.miraiMessageEventEmitter.emit(syncId, message);
         }
 
         // If we received a message without syncId,
@@ -98,7 +98,7 @@ export class AkaneAdapterMirai implements AkaneAdapter {
         //
         // reference:
         // <https://docs.mirai.mamoe.net/mirai-api-http/misc/Migration2.html#syncid>
-        debugPrint("receiving", message);
+        debugPrint("receiving message", { syncId, message });
       });
     });
   }
@@ -112,6 +112,11 @@ export class AkaneAdapterMirai implements AkaneAdapter {
   async start(): Promise<void> {
     debugPrint("starting.");
     await this.initWebsocketUpstream();
+
+    // debug >>>
+    this.miraiMessageEventEmitter.on("-1", this._dimension2ndEchoing);
+    // <<< debug
+
     debugPrint("started.");
   }
 
@@ -122,8 +127,12 @@ export class AkaneAdapterMirai implements AkaneAdapter {
       delete this.upstream;
     }
 
-    this.messageEmitter.removeAllListeners();
+    this.miraiMessageEventEmitter.removeAllListeners();
 
     debugPrint("stopped.");
+  }
+
+  _dimension2ndEchoing(message: MiraiMessage): void {
+    console.log("echoing", message);
   }
 }

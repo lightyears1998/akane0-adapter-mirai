@@ -1,6 +1,8 @@
 import AkaneAdapterMirai from ".";
 
 const adapter = new AkaneAdapterMirai();
+console.log(adapter);
+
 adapter.start();
 
 setTimeout(() => {
